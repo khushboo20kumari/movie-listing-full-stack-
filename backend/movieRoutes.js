@@ -35,6 +35,22 @@ router.patch('/:id/like', (req, res) => {
       res.status(500).json({ error: 'Failed to like movie' });
     });
 });
+router.delete('/:id', (req, res) => {
+  Movie.findByPk(req.params.id)
+    .then((movie) => {
+      if (!movie) {
+        return res.status(404).json({ error: 'Movie not found' });
+      }
+      return movie.destroy();
+    })
+    .then(() => {
+      res.json({ message: 'Movie deleted successfully' });
+    })
+    .catch((err) => {
+      res.status(500).json({ error: 'Failed to delete movie' });
+    });
+});
+
 
 
 module.exports = router;

@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react';
 import './App.css';
-
+import MovieRow from './Component/MovieRow';
 function App() {
   const [data, setData] = useState([]);
 
@@ -29,7 +29,19 @@ function App() {
         console.error(error);
       });
   };
-  
+  const handleDelete = (id) => {
+    fetch(`http://localhost:3000/api/movies/${id}`, {
+      method: 'DELETE',
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to delete movie');
+        setData((prev) => prev.filter((movie) => movie.id !== id));
+      })
+      .catch((err) => console.error('Failed to delete movie', err));
+  };
+
+
+
   const handleDislike = (id) => {
     setData((prev) =>
       prev.map((movie) =>
@@ -46,17 +58,13 @@ function App() {
 
   return (
     <div className="App">
-      {data.map((item) => (
-        <div key={item.id} style={{ marginBottom: '20px' }}>
-          <p>{item.title}</p>
-          <p>{item.duration}</p>
-          <p>{item.description}</p>
-          <img src={item.image_url} alt={item.title} width="200" /><br />
-          <button onClick={() => handleLike(item.id)}>Like</button>
-          <span style={{ margin: '0 10px' }}>{item.likeCount}</span>
-          <button onClick={() => handleDislike(item.id)}>Dislike</button>
-        </div>
-      ))}
+
+      <MovieRow
+        handleLike={handleLike}
+        handleDislike={handleDislike}
+        handleDelete={handleDelete}
+        data={data} />
+
     </div>
   );
 }
