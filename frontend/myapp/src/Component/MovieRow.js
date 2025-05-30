@@ -1,4 +1,5 @@
-function MovieRow({handleDelete,handleDislike,handleLike,data}) {
+import NewMovieAdd from "./NewMovieAdd";
+function MovieRow({ handleDelete, handleDislike, handleLike, data }) {
     return (
         <>
             <div className="container py-4">
@@ -48,6 +49,7 @@ function MovieRow({handleDelete,handleDislike,handleLike,data}) {
                     ))}
                 </div>
             </div>
+            <NewMovieAdd />
         </>
     )
 }
